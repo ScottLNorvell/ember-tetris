@@ -1,3 +1,9 @@
-{{#each yPositions as |pos|}}
-  <rect x="0px" y="{{pos}}px" width="30px" height="30px" />
+{{#each positions as |pos|}}
+  <rect
+    x="{{pos.x}}px"
+    y="{{pos.y}}px"
+    width="{{scale}}px"
+    height="{{scale}}px"
+    class="ttr-tetromino__square--{{type}}"
+  />
 {{/each}}
