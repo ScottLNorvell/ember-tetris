@@ -6,3 +6,31 @@
   stroke: #bada55;
   stroke-width:1;
 }
+
+@mixin tetro-square($color) {
+  stroke-width: 3;
+  stroke: darken($color, 10);
+  fill: $color;
+}
+
+.ttr-tetromino__square--i {
+  @include tetro-square(cyan);
+}
+.ttr-tetromino__square--o {
+  @include tetro-square(yellow);
+}
+.ttr-tetromino__square--t {
+  @include tetro-square(purple);
+}
+.ttr-tetromino__square--s {
+  @include tetro-square(green);
+}
+.ttr-tetromino__square--z {
+  @include tetro-square(red);
+}
+.ttr-tetromino__square--j {
+  @include tetro-square(blue);
+}
+.ttr-tetromino__square--l {
+  @include tetro-square(orange);
+}
