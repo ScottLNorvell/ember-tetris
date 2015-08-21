@@ -27,7 +27,6 @@ export default Ember.Component.extend({
   yPos: 0,
   tetrominoType: computed.alias('tetromino.type'),
   scale: computed.alias('tetromino.scale'),
-  tetrominoRotation: 0,
   downRect() {
     this.set('yPos', this.get('yPos') + increment);
   },

@@ -6,11 +6,9 @@
   style="fill:none;"
   />
 {{#each positions as |pos|}}
-  <rect
-    x="{{pos.x}}px"
-    y="{{pos.y}}px"
-    width="{{scale}}px"
-    height="{{scale}}px"
-    class="ttr-tetromino__square--{{type}}"
-  />
+  {{ttr-tetromino-square
+      type=type
+      pos=pos
+      scale=scale
+    }}
 {{/each}}
