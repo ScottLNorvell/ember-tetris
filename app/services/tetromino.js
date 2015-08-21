@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import tetrominos from 'ember-tetris/utils/tetrominos';
 
 const {
   Service,
@@ -6,46 +7,54 @@ const {
 } = Ember;
 
 export default Service.extend({
-  i: computed(function() {
-    return [
-      [0,0,0,0],
-      [0,1,2,3]
-    ];
+  scale: 30,
+
+  type: 't',
+
+  box: computed('type', 'scale', function() {
+    let {
+      scale,
+      type
+    } = this;
+    let [w, h] = tetrominos[type]['box'];
+    return {
+      w: w * scale,
+      h: h * scale
+    };
   }),
-  o: computed(function() {
-    return [
-      [0,1,0,1],
-      [0,0,1,1]
-    ];
+
+  positions: computed('type', 'scale', function() {
+    let {
+      scale,
+      type
+    } = this;
+    let data = tetrominos[type].positions;
+    let positions = [];
+    for (let i = 0, len = data[0].length; i < len; i++) {
+      let position = {
+        x: data[0][i] * scale,
+        y: data[1][i] * scale
+      };
+      positions.push(position);
+    }
+    return positions;
   }),
-  t: computed(function() {
-    return [
-      [0,1,2,1],
-      [0,0,0,1]
-    ];
+
+  rotation: 0,
+
+  origin: computed('type', function() {
+    let type = this.get('type');
+    return tetrominos[type].origin;
   }),
-  s: computed(function() {
-    return [
-      [1,2,0,1],
-      [0,0,1,1]
-    ];
-  }),
-  z: computed(function() {
-    return [
-      [0,1,1,2],
-      [0,0,1,1]
-    ];
-  }),
-  j: computed(function() {
-    return [
-      [1,1,0,1],
-      [0,1,2,2]
-    ];
-  }),
-  l: computed(function() {
-    return [
-      [0,0,0,1],
-      [0,1,2,2]
-    ];
-  }),
+
+  changeRotation() {
+    let {
+      rotation,
+      type
+    } = this;
+    let rotations = tetrominos[type].rotations;
+    if (rotations) {
+      this.set('rotation', (rotation + 1) % rotations);
+    }
+  }
 });

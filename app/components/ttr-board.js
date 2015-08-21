@@ -1,17 +1,33 @@
 import Ember from 'ember';
 
+const {
+  Component,
+  computed,
+  inject
+} = Ember;
+
 const increment = 30;
-const tetrominoTypes = ['i', 'o', 't', 'z', 's', 'j', 'l'];
+const tetrominoTypes = ['t', 'z', 's', 'j', 'l', 'i', 'o'];
 let ttrI = 0;
+
 export default Ember.Component.extend({
   classNames: ['tetris-board'],
+  tetromino: inject.service(),
   tagName: 'svg',
   attributeBindings: ['width', 'height'],
-  width: '300px',
-  height: '660px',
+  width: computed('scale', function() {
+    let scale = this.get('scale');
+    return `${scale * 10}px`
+  }),
+  height: computed('scale', function() {
+    let scale = this.get('scale');
+    return `${scale * 22}px`
+  }),
   xPos: 0,
   yPos: 0,
-  tetrominoType: 'i',
+  tetrominoType: computed.alias('tetromino.type'),
+  scale: computed.alias('tetromino.scale'),
+  tetrominoRotation: 0,
   downRect() {
     this.set('yPos', this.get('yPos') + increment);
   },
@@ -25,6 +41,9 @@ export default Ember.Component.extend({
     ttrI = (ttrI + 1) % tetrominoTypes.length;
     this.set('tetrominoType', tetrominoTypes[ttrI]);
   },
+  rotateTetromino() {
+    this.get('tetromino').changeRotation();
+  },
   didInsertElement() {
     Ember.$(document).on('keypress', (e) => {
       e.preventDefault();
@@ -37,6 +56,8 @@ export default Ember.Component.extend({
         this.rightRect();
       } else if (e.keyCode === 108) {
         this.changeTetromino();
+      } else if (e.keyCode === 107) {
+        this.rotateTetromino();
       }
     });
   }
