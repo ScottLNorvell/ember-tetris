@@ -13,8 +13,14 @@ export default Component.extend({
     let type = this.get('type');
     return `ttr-tetromino__square--${type}`;
   }),
-  x: computed('pos', function() { return `${this.get('pos.x')}px`; }),
-  y: computed('pos', function() { return `${this.get('pos.y')}px`; }),
+  x: computed('pos', 'scale', function() {
+    let scale = this.get('scale');
+    return `${this.get('pos.x') * scale}px`;
+  }),
+  y: computed('pos', 'scale', function() {
+    let scale = this.get('scale');
+    return `${this.get('pos.y') * scale}px`;
+  }),
   width: computed('scale', function() { return `${this.get('scale')}px`; }),
   height: computed('scale', function() { return `${this.get('scale')}px`; })
 });

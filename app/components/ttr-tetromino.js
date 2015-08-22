@@ -19,16 +19,18 @@ export default Component.extend({
   type: computed.reads('tetromino.type'),
   rotation: computed.reads('tetromino.rotation'),
   origin: computed.reads('tetromino.origin'),
+  xPos: computed.reads('tetromino.xPos'),
+  yPos: computed.reads('tetromino.yPos'),
 
-  style: computed('translateX', 'translateY', 'rotation', 'origin', 'scale', function() {
-    let translateX = this.get('translateX');
-    let translateY = this.get('translateY');
+  style: computed('xPos', 'yPos', 'rotation', 'origin', 'scale', function() {
+    let xPos = this.get('xPos');
+    let yPos = this.get('yPos');
     let rotation = this.get('rotation');
     let origin = this.get('origin');
     let scale = this.get('scale');
     if (typeof origin !== 'string') {
       origin = `${origin[0] * scale}px ${origin[1] * scale}px`;
     }
-    return `transform: translate(${translateX}px, ${translateY}px) rotate(${rotation * 90}deg); transform-origin: ${origin}`;
+    return `transform: translate(${xPos * scale}px, ${yPos * scale}px) rotate(${rotation * 90}deg); transform-origin: ${origin}`;
   })
 });

@@ -3,10 +3,11 @@ import Ember from 'ember';
 const {
   Component,
   computed,
-  inject
+  inject,
+  $
 } = Ember;
 
-const increment = 30;
+// TODO: get these from tetrominos.keys()?
 const tetrominoTypes = ['t', 'z', 's', 'j', 'l', 'i', 'o'];
 let ttrI = 0;
 
@@ -23,18 +24,26 @@ export default Ember.Component.extend({
     let scale = this.get('scale');
     return `${scale * 22}px`
   }),
-  xPos: 0,
-  yPos: 0,
+  xPos: computed.alias('tetromino.xPos'),
+  yPos: computed.alias('tetromino.yPos'),
   tetrominoType: computed.alias('tetromino.type'),
   scale: computed.alias('tetromino.scale'),
+
+  // TODO: move these to a tetromino service or a Controls Service?
   downRect() {
-    this.set('yPos', this.get('yPos') + increment);
+    if (!this.get('tetromino').willCollide('down')) {
+      this.incrementProperty('yPos');
+    }
   },
   rightRect() {
-    this.set('xPos', this.get('xPos') + increment);
+    if (!this.get('tetromino').willCollide('right')) {
+      this.incrementProperty('xPos');
+    }
   },
   leftRect() {
-    this.set('xPos', this.get('xPos') - increment);
+    if (!this.get('tetromino').willCollide('left')) {
+      this.decrementProperty('xPos');
+    }
   },
   changeTetromino() {
     ttrI = (ttrI + 1) % tetrominoTypes.length;
@@ -43,20 +52,31 @@ export default Ember.Component.extend({
   rotateTetromino() {
     this.get('tetromino').changeRotation();
   },
+
   didInsertElement() {
-    Ember.$(document).on('keypress', (e) => {
-      e.preventDefault();
+    $(document).on('keydown', (e) => {
       console.log(e.keyCode);
-      if (e.keyCode === 115) {
-        this.downRect();
-      } else if (e.keyCode === 97) {
-        this.leftRect();
-      } else if (e.keyCode === 100) {
-        this.rightRect();
-      } else if (e.keyCode === 108) {
-        this.changeTetromino();
-      } else if (e.keyCode === 107) {
-        this.rotateTetromino();
+      switch (e.keyCode) {
+        case 40:
+          e.preventDefault();
+          this.downRect();
+          break;
+        case 37:
+          e.preventDefault();
+          this.leftRect();
+          break;
+        case 39:
+          e.preventDefault();
+          this.rightRect();
+          break;
+        case 67:
+          e.preventDefault();
+          this.changeTetromino();
+          break;
+        case 38:
+          e.preventDefault();
+          this.rotateTetromino();
+          break;
       }
     });
   }
