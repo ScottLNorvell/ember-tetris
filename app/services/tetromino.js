@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import tetrominos from 'ember-tetris/utils/tetrominos';
+import rotations from 'ember-tetris/utils/rotations';
 
 const {
   Service,
@@ -49,11 +50,23 @@ export default Service.extend({
   }),
 
 
-  locations: computed('positions', 'xPos', 'yPos', function() {
+  locations: computed('positions', 'xPos', 'yPos', 'rotation', 'rotationOrigin', function() {
     let positions = this.get('positions');
+    let rotation = this.get('rotation');
     let xPos = this.get('xPos');
     let yPos = this.get('yPos');
-    return positions.map(pos => ({ x: pos.x + xPos, y: pos.y + yPos }));
+    let [originX, originY] = this.get('rotationOrigin');
+    return positions.map((pos) => {
+      let posX, posY;
+      let {x,y} = pos;
+      if (rotation) {
+        [x, y] = eval(rotations[rotation]);
+      }
+      return {
+        x: x + xPos,
+        y: y + yPos
+      }
+    });
   }),
 
   rotation: 0,
@@ -61,6 +74,11 @@ export default Service.extend({
   origin: computed('type', function() {
     let type = this.get('type');
     return tetrominos[type].origin;
+  }),
+
+  rotationOrigin: computed('type', function() {
+    let type = this.get('type');
+    return tetrominos[type].rotationOrigin;
   }),
 
   changeRotation() {
