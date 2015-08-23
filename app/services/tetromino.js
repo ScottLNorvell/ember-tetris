@@ -14,6 +14,15 @@ const [
   downLimit
 ] = [9,0,21];
 
+
+const tetrominoTypes = ['t', 'z', 's', 'j', 'l', 'i', 'o'];
+
+// TODO: make a util!
+const choose = function(arr) {
+  let i = Math.floor(Math.random() * arr.length);
+  return arr[i];
+};
+
 export default Service.extend({
   xPos: 0,
   yPos: 0,
@@ -54,9 +63,8 @@ export default Service.extend({
     let rotation = isPresent(_rotation) ? _rotation : this.get('rotation');
     let xPos = this.get('xPos');
     let yPos = this.get('yPos');
-    let [originX, originY] = this.get('rotationOrigin');
+    let [originX, originY] = this.get('rotationOrigin'); // jshint ignore:line
     return positions.map((pos) => {
-      let posX, posY;
       let {x,y} = pos;
       if (rotation) {
         [x, y] = eval(rotations[rotation]);
@@ -64,7 +72,7 @@ export default Service.extend({
       return {
         x: x + xPos,
         y: y + yPos
-      }
+      };
     });
   },
 
@@ -97,6 +105,16 @@ export default Service.extend({
         this.set('rotation', newRotation);
       }
     }
+  },
+
+  resetTetromino() {
+    let newType =
+    this.setProperties({
+      xPos: 0,
+      yPos: 0,
+      rotation: 0,
+      type: choose(tetrominoTypes)
+    });
   },
 
   willCollide(direction) {

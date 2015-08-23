@@ -4,7 +4,8 @@ const {
   Component,
   computed,
   inject,
-  $
+  $,
+  A
 } = Ember;
 
 // TODO: get these from tetrominos.keys()?
@@ -28,10 +29,22 @@ export default Ember.Component.extend({
   yPos: computed.alias('tetromino.yPos'),
   tetrominoType: computed.alias('tetromino.type'),
   scale: computed.alias('tetromino.scale'),
+  played: A(),
 
   // TODO: move these to a tetromino service or a Controls Service?
   downRect() {
-    if (!this.get('tetromino').willCollide('down')) {
+    let tetromino = this.get('tetromino');
+    let played = this.get('played');
+    if (tetromino.willCollide('down')) {
+      // push locations into Played, check lines, remove
+      let locations = tetromino.get('locations');
+      let type = this.get('tetrominoType');
+      for (let i = 0, len = locations.length; i < len; i++) {
+        let {x,y} = locations[i];
+        played.pushObject({x: x, y: y, type: type});
+      }
+      tetromino.resetTetromino();
+    } else {
       this.incrementProperty('yPos');
     }
   },

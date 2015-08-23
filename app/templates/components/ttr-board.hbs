@@ -1,3 +1,11 @@
 {{ttr-grid}}
 
 {{ttr-tetromino}}
+
+{{#each played as |tetr|}}
+  {{ttr-tetromino-square
+      type=tetr.type
+      pos=tetr
+      scale=scale
+    }}
+{{/each}}
