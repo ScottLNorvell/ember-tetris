@@ -4,7 +4,8 @@ import rotations from 'ember-tetris/utils/rotations';
 
 const {
   Service,
-  computed
+  computed,
+  isPresent
 } = Ember;
 
 const [
@@ -49,10 +50,8 @@ export default Service.extend({
     return positions;
   }),
 
-
-  locations: computed('positions', 'xPos', 'yPos', 'rotation', 'rotationOrigin', function() {
-    let positions = this.get('positions');
-    let rotation = this.get('rotation');
+  _applyTransformation(positions, _rotation) {
+    let rotation = isPresent(_rotation) ? _rotation : this.get('rotation');
     let xPos = this.get('xPos');
     let yPos = this.get('yPos');
     let [originX, originY] = this.get('rotationOrigin');
@@ -67,6 +66,11 @@ export default Service.extend({
         y: y + yPos
       }
     });
+  },
+
+  locations: computed('positions', 'xPos', 'yPos', 'rotation', 'rotationOrigin', function() {
+    let positions = this.get('positions');
+    return this._applyTransformation(positions);
   }),
 
   rotation: 0,
@@ -88,7 +92,10 @@ export default Service.extend({
     } = this;
     let rotations = tetrominos[type].rotations;
     if (rotations) {
-      this.set('rotation', (rotation + 1) % rotations);
+      let newRotation = (rotation + 1) % rotations;
+      if (!this.cannotRotate(newRotation)) {
+        this.set('rotation', newRotation);
+      }
     }
   },
 
@@ -110,5 +117,13 @@ export default Service.extend({
       case 'down':
         return locations.any(loc => loc.y === downLimit);
     }
+  },
+
+  cannotRotate(rotation) {
+    let positions = this.get('positions');
+    let locations = this._applyTransformation(positions, rotation);
+    return locations.any((loc) => {
+      return loc.x > rightLimit || loc.x < leftLimit || loc.y > downLimit;
+    });
   }
 });
