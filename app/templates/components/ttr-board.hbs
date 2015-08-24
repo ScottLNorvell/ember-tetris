@@ -2,10 +2,10 @@
 
 {{ttr-tetromino}}
 
-{{#each played as |tetr|}}
+{{#each playedSquares as |square|}}
   {{ttr-tetromino-square
-      type=tetr.type
-      pos=tetr
+      type=square.type
+      pos=square
       scale=scale
     }}
 {{/each}}

@@ -15,6 +15,7 @@ let ttrI = 0;
 export default Ember.Component.extend({
   classNames: ['tetris-board'],
   tetromino: inject.service(),
+  played: inject.service(),
   tagName: 'svg',
   attributeBindings: ['width', 'height'],
   width: computed('scale', function() {
@@ -29,20 +30,22 @@ export default Ember.Component.extend({
   yPos: computed.alias('tetromino.yPos'),
   tetrominoType: computed.alias('tetromino.type'),
   scale: computed.alias('tetromino.scale'),
-  played: A(),
+  playedSquares: computed.alias('played.squares'),
 
   // TODO: move these to a tetromino service or a Controls Service?
   downRect() {
     let tetromino = this.get('tetromino');
     let played = this.get('played');
+    let playedSquares = this.get('playedSquares');
     if (tetromino.willCollide('down')) {
       // push locations into Played, check lines, remove
       let locations = tetromino.get('locations');
       let type = this.get('tetrominoType');
       for (let i = 0, len = locations.length; i < len; i++) {
         let {x,y} = locations[i];
-        played.pushObject({x: x, y: y, type: type});
+        playedSquares.pushObject({x: x, y: y, type: type});
       }
+      played.addToSet(locations);
       tetromino.resetTetromino();
     } else {
       this.incrementProperty('yPos');

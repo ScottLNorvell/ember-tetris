@@ -1,10 +1,13 @@
 import Ember from 'ember';
 import tetrominos from 'ember-tetris/utils/tetrominos';
 import rotations from 'ember-tetris/utils/rotations';
+import choose from 'ember-tetris/utils/choose';
+import toSquareKey from 'ember-tetris/utils/to-square-key';
 
 const {
   Service,
   computed,
+  inject,
   isPresent
 } = Ember;
 
@@ -17,13 +20,10 @@ const [
 
 const tetrominoTypes = ['t', 'z', 's', 'j', 'l', 'i', 'o'];
 
-// TODO: make a util!
-const choose = function(arr) {
-  let i = Math.floor(Math.random() * arr.length);
-  return arr[i];
-};
-
 export default Service.extend({
+  played: inject.service(),
+  squareSet: computed.alias('played.squareSet'),
+
   xPos: 0,
   yPos: 0,
 
@@ -108,7 +108,6 @@ export default Service.extend({
   },
 
   resetTetromino() {
-    let newType =
     this.setProperties({
       xPos: 0,
       yPos: 0,
@@ -119,21 +118,23 @@ export default Service.extend({
 
   willCollide(direction) {
     let locations = this.get('locations');
+    let squareSet = this.get('squareSet');
     switch (direction) {
       case 'right':
-        // Soon this will be:
-        // ```javascript
-        // locations.any((loc) => {
-        //   let outOfBounds = loc.x === rightLimit;
-        //   let willCollide = setOfPoints.has(`${loc.x + 1},${loc.y}`);
-        //   return outOfBounds && willCollide;
-        // });
-        // ```
-        return locations.any(loc => loc.x === rightLimit);
+        return locations.any((loc) => {
+          let {x,y} = loc;
+          return loc.x === rightLimit || squareSet.has(toSquareKey({x: x + 1, y: y}));
+        });
       case 'left':
-        return locations.any(loc => loc.x === leftLimit);
+        return locations.any((loc) => {
+          let {x,y} = loc;
+          return loc.x === leftLimit || squareSet.has(toSquareKey({x: x - 1, y: y}));
+        });
       case 'down':
-        return locations.any(loc => loc.y === downLimit);
+        return locations.any((loc) => {
+          let {x,y} = loc;
+          return y === downLimit || squareSet.has(toSquareKey({x: x, y: y + 1}));
+        });
     }
   },
 
