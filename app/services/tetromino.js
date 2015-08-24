@@ -8,6 +8,7 @@ const {
   Service,
   computed,
   inject,
+  on,
   isPresent
 } = Ember;
 
@@ -21,6 +22,10 @@ const [
 const tetrominoTypes = ['t', 'z', 's', 'j', 'l', 'i', 'o'];
 
 export default Service.extend({
+  setType: on('init', function() {
+    this.set('type', choose(tetrominoTypes));
+  }),
+
   played: inject.service(),
   squareSet: computed.alias('played.squareSet'),
 
