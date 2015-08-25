@@ -145,9 +145,10 @@ export default Service.extend({
 
   cannotRotate(rotation) {
     let positions = this.get('positions');
+    let squareSet = this.get('squareSet');
     let locations = this._applyTransformation(positions, rotation);
     return locations.any((loc) => {
-      return loc.x > rightLimit || loc.x < leftLimit || loc.y > downLimit;
+      return loc.x > rightLimit || loc.x < leftLimit || loc.y > downLimit || squareSet.has(toSquareKey(loc));
     });
   }
 });
