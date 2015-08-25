@@ -3,16 +3,24 @@ import toSquareKey from 'ember-tetris/utils/to-square-key';
 
 const {
   Service,
-  computed,
-  observes,
-  A
+  computed
 } = Ember;
 
 // TODO: make squares a special object that adds to set on pushObject?
 // make this better!
 
 export default Service.extend({
-  squares: A(),
+  squares: computed(function() {
+    let squares = [];
+    squares.__pushObject = squares.pushObject;
+    let squareSet = this.get('squareSet');
+    squares.pushObject = function(o) {
+      squareSet.add(toSquareKey(o));
+      // add to lines...
+      this.__pushObject(o);
+    };
+    return squares;
+  }),
 
   squareSet: computed(function() {
     return new Set();

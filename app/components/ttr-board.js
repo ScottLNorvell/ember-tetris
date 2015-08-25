@@ -4,15 +4,14 @@ const {
   Component,
   computed,
   inject,
-  $,
-  A
+  $
 } = Ember;
 
 // TODO: get these from tetrominos.keys()?
 const tetrominoTypes = ['t', 'z', 's', 'j', 'l', 'i', 'o'];
 let ttrI = 0;
 
-export default Ember.Component.extend({
+export default Component.extend({
   classNames: ['tetris-board'],
   tetromino: inject.service(),
   played: inject.service(),
@@ -20,11 +19,11 @@ export default Ember.Component.extend({
   attributeBindings: ['width', 'height'],
   width: computed('scale', function() {
     let scale = this.get('scale');
-    return `${scale * 10}px`
+    return `${scale * 10}px`;
   }),
   height: computed('scale', function() {
     let scale = this.get('scale');
-    return `${scale * 22}px`
+    return `${scale * 22}px`;
   }),
   xPos: computed.alias('tetromino.xPos'),
   yPos: computed.alias('tetromino.yPos'),
@@ -45,7 +44,6 @@ export default Ember.Component.extend({
         let {x,y} = locations[i];
         playedSquares.pushObject({x: x, y: y, type: type});
       }
-      played.addToSet(locations);
       tetromino.resetTetromino();
     } else {
       this.incrementProperty('yPos');
