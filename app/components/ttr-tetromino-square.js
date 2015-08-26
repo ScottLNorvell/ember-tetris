@@ -13,11 +13,11 @@ export default Component.extend({
     let type = this.get('type');
     return `ttr-tetromino__square--${type}`;
   }),
-  x: computed('pos', 'scale', function() {
+  x: computed('pos.x', 'scale', function() {
     let scale = this.get('scale');
     return `${this.get('pos.x') * scale}px`;
   }),
-  y: computed('pos', 'scale', function() {
+  y: computed('pos.y', 'scale', function() {
     let scale = this.get('scale');
     return `${this.get('pos.y') * scale}px`;
   }),

@@ -44,6 +44,7 @@ export default Component.extend({
         let {x,y} = locations[i];
         playedSquares.pushObject({x: x, y: y, type: type});
       }
+      played.checkLines();
       tetromino.resetTetromino();
     } else {
       this.incrementProperty('yPos');

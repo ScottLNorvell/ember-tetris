@@ -38,3 +38,7 @@
 .ttr-tetromino__square--l {
   @include tetro-square(orange);
 }
+
+.ttr-tetromino__square--x {
+  @include tetro-square(grey);
+}
