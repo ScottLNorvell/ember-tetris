@@ -46,8 +46,10 @@ export default Component.extend({
       }
       played.checkLines();
       tetromino.resetTetromino();
+      return true;
     } else {
       this.incrementProperty('yPos');
+      return false;
     }
   },
   rightRect() {
@@ -66,6 +68,11 @@ export default Component.extend({
   },
   rotateTetromino() {
     this.get('tetromino').changeRotation();
+  },
+
+  playTetromino() {
+    let played = false;
+    while (!played) {played = this.downRect();}
   },
 
   didInsertElement() {
@@ -91,6 +98,10 @@ export default Component.extend({
         case 38:
           e.preventDefault();
           this.rotateTetromino();
+          break;
+        case 32:
+          e.preventDefault();
+          this.playTetromino();
           break;
       }
     });
