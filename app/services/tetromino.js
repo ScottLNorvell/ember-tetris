@@ -29,6 +29,8 @@ export default Service.extend({
   played: inject.service(),
   squareSet: computed.alias('played.squareSet'),
 
+  queue: Ember.A([choose(tetrominoTypes), choose(tetrominoTypes)]),
+
   xPos: 0,
   yPos: 0,
 
@@ -113,11 +115,14 @@ export default Service.extend({
   },
 
   resetTetromino() {
+    let queue = this.get('queue');
+    let nextType = queue.popObject();
+    queue.unshiftObject(choose(tetrominoTypes));
     this.setProperties({
       xPos: 0,
       yPos: 0,
       rotation: 0,
-      type: choose(tetrominoTypes)
+      type: nextType
     });
   },
 

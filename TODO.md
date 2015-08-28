@@ -40,3 +40,8 @@ y 0 1 2 2
 - [x] remove deleted lines from `lines` and adjust down
 - [ ] show tetromino
 - [ ] determine some sweet animation!
+
+### Next Piece
+- [ ] make up next SVG
+- [ ] reuse ttr-tetromino component (and make more generic, i.e. fill with values instead of bind to them from service)
+- [ ] put next piece or 2 in it...
