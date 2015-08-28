@@ -4,8 +4,11 @@ const {
   Component,
   computed,
   inject,
+  run,
   $
 } = Ember;
+
+const raf = window.requestAnimationFrame;
 
 // TODO: get these from tetrominos.keys()?
 const tetrominoTypes = ['t', 'z', 's', 'j', 'l', 'i', 'o'];
@@ -75,35 +78,55 @@ export default Component.extend({
     while (!played) {played = this.downRect();}
   },
 
+  now: null,
+
+  fallInterval: 1000,
+
+  autoFall(timestamp) {
+    let now = this.get('now');
+    let elapsed = timestamp - now;
+    if (elapsed >= this.fallInterval) {
+      this.set('now', timestamp);
+      this.downRect();
+    }
+    this.setAutoFall();
+  },
+
+  setAutoFall() {
+    raf(this.autoFall.bind(this));
+  },
+
   didInsertElement() {
     $(document).on('keydown', (e) => {
       console.log(e.keyCode);
       switch (e.keyCode) {
-        case 40:
+        case 40: // down arrow
           e.preventDefault();
           this.downRect();
           break;
-        case 37:
+        case 37: // up arrow
           e.preventDefault();
           this.leftRect();
           break;
-        case 39:
+        case 39: // right arrow
           e.preventDefault();
           this.rightRect();
           break;
-        case 67:
+        case 67: // 'c' key
           e.preventDefault();
           this.changeTetromino();
           break;
-        case 38:
+        case 38: // up arrow
           e.preventDefault();
           this.rotateTetromino();
           break;
-        case 32:
+        case 32: // space bar
           e.preventDefault();
           this.playTetromino();
           break;
       }
     });
+    // TODO: put this and ctrls in a service all it's own!
+    run.next(() => this.setAutoFall())
   }
 });
