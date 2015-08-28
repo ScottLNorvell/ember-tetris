@@ -124,6 +124,13 @@ export default Service.extend({
       rotation: 0,
       type: nextType
     });
+    if (this.checkFit()) { console.log('GAME OVER!!!!'); }
+  },
+
+  checkFit() {
+    let locations = this.get('locations');
+    let squareSet = this.get('squareSet');
+    return locations.any(pt => squareSet.has(toSquareKey(pt)));
   },
 
   willCollide(direction) {
