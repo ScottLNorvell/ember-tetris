@@ -9,10 +9,12 @@ const {
 } = Ember;
 
 const raf = window.requestAnimationFrame;
+const caf = window.cancelAnimationFrame;
 
 // TODO: get these from tetrominos.keys()?
 const tetrominoTypes = ['t', 'z', 's', 'j', 'l', 'i', 'o'];
 let ttrI = 0;
+let afID = null;
 
 export default Component.extend({
   classNames: ['tetris-board'],
@@ -78,6 +80,20 @@ export default Component.extend({
     while (!played) {played = this.downRect();}
   },
 
+  paused: false,
+
+  pauseGame() {
+    // TODO: we should disable all keys when paused... this just stops autofall
+    // ok for now...
+    if (this.get('paused')) {
+      this.set('paused', false);
+      this.setAutoFall();
+    } else {
+      this.set('paused', true);
+      caf(afID);
+    }
+  },
+
   now: null,
 
   fallInterval: 1000,
@@ -85,7 +101,7 @@ export default Component.extend({
   autoFall(timestamp) {
     let now = this.get('now');
     let elapsed = timestamp - now;
-    if (elapsed >= this.fallInterval) {
+    if (elapsed >= this.get('fallInterval')) {
       this.set('now', timestamp);
       this.downRect();
     }
@@ -93,7 +109,7 @@ export default Component.extend({
   },
 
   setAutoFall() {
-    raf(this.autoFall.bind(this));
+    afID = raf(this.autoFall.bind(this));
   },
 
   didInsertElement() {
@@ -123,6 +139,10 @@ export default Component.extend({
         case 32: // space bar
           e.preventDefault();
           this.playTetromino();
+          break;
+        case 80: // 'p' key
+          e.preventDefault();
+          this.pauseGame();
           break;
       }
     });
