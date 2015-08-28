@@ -4,6 +4,7 @@ import toSquareKey from 'ember-tetris/utils/to-square-key';
 const {
   Service,
   computed,
+  inject,
   isPresent
 } = Ember;
 
@@ -11,6 +12,7 @@ const {
 // make this better!
 
 export default Service.extend({
+  scoring: inject.service(),
   squares: computed(function() {
     let squares = [];
     squares.__pushObject = squares.pushObject;
@@ -111,6 +113,8 @@ export default Service.extend({
       this.shiftLines(linesToDelete);
       // reset the ref objects
       this.resetStores();
+      // calculate the score
+      this.get('scoring').addScore(linesToDelete);
     }
   }
 });

@@ -43,10 +43,14 @@
   @include tetro-square(grey);
 }
 
-.ttr-up-next {
+.ttr-stuff {
   position: absolute;
   left: 360px;
   top: 100px;
+}
+
+.ttr-up-next {
   border: 3px solid black;
   border-radius: 50%;
 }
+
