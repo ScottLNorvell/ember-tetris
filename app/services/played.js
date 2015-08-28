@@ -27,7 +27,7 @@ export default Service.extend({
       if (lines[pt.y]) {
         lines[pt.y].pushObject(pt);
       } else {
-        lines[pt.y] = [pt]
+        lines[pt.y] = [pt];
       }
       this.__pushObject(pt);
     };
@@ -52,7 +52,7 @@ export default Service.extend({
       if (newLines[pt.y]) {
         newLines[pt.y].pushObject(pt);
       } else {
-        newLines[pt.y] = [pt]
+        newLines[pt.y] = [pt];
       }
       squareSet.add(toSquareKey(pt));
     }
@@ -80,7 +80,7 @@ export default Service.extend({
 
   deleteLines() {
     let squares = this.get('squares');
-    let toDelete = squares.filter(pt => pt.get('type') === 'x')
+    let toDelete = squares.filter(pt => pt.get('type') === 'x');
     toDelete.forEach((pt) => {
       squares.removeObject(pt);
       pt.destroy();
