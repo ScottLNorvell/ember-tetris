@@ -6,7 +6,6 @@
 look at template strings
 see if there is an ES6 Dash set!
 
-
 #### Cyan (I)
 x 0 0 0 0
 y 0 1 2 3
@@ -46,5 +45,11 @@ y 0 1 2 2
 - [ ] reuse ttr-tetromino component (and make more generic, i.e. fill with values instead of bind to them from service)
 - [ ] put next piece or 2 in it...
 
+### Refactor
+- [ ] make controls service (for controls)
+
 ### Game Over
-- [ ] if reset Tetromino cannot be played === 'game over'
+- [x] if reset Tetromino cannot be played === 'game over'
+    - [ ] Currently only console logs... 
+- [ ] pause the game
+- [ ] ability to reset the board...

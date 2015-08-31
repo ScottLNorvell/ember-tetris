@@ -13,7 +13,7 @@ export default Service.extend({
   level: computed('lines', function() {
     let lines = this.get('lines');
     if (lines) {
-      return Math.floor(lines/5)
+      return Math.floor(lines/5);
     } else {
       return 0;
     }
