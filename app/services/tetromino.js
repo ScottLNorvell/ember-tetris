@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import tetrominos from 'ember-tetris/utils/tetrominos';
 import rotations from 'ember-tetris/utils/rotations';
-import choose from 'ember-tetris/utils/choose';
 import toSquareKey from 'ember-tetris/utils/to-square-key';
 
 const {
@@ -18,25 +17,23 @@ const [
   downLimit
 ] = [9,0,21];
 
-
-const tetrominoTypes = ['t', 'z', 's', 'j', 'l', 'i', 'o'];
-
 export default Service.extend({
   setType: on('init', function() {
-    this.set('type', choose(tetrominoTypes));
+    let type = this.get('bag.bag').popObject();
+    this.set('type', type);
   }),
 
   played: inject.service(),
+  controls: inject.service(),
+  bag: inject.service(),
   squareSet: computed.alias('played.squareSet'),
-
-  queue: Ember.A([choose(tetrominoTypes), choose(tetrominoTypes)]),
 
   xPos: 0,
   yPos: 0,
 
   scale: 30,
 
-  type: 't',
+  type: null,
 
   box: computed('type', 'scale', function() {
     let {
@@ -115,9 +112,8 @@ export default Service.extend({
   },
 
   resetTetromino() {
-    let queue = this.get('queue');
-    let nextType = queue.popObject();
-    queue.unshiftObject(choose(tetrominoTypes));
+    let bag = this.get('bag');
+    let nextType = bag.get('bag').popObject();
     this.setProperties({
       xPos: 0,
       yPos: 0,
@@ -125,9 +121,10 @@ export default Service.extend({
       type: nextType
     });
     if (this.checkFit()) { console.log('GAME OVER!!!!'); }
+    bag.fillBag();
   },
 
-  checkFit() {
+  doesNotFit() {
     let locations = this.get('locations');
     let squareSet = this.get('squareSet');
     return locations.any(pt => squareSet.has(toSquareKey(pt)));

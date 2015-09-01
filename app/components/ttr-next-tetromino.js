@@ -18,11 +18,12 @@ export default Component.extend({
   }),
 
   tetromino: inject.service(),
+  bag: inject.service(),
 
   scale: computed.reads('tetromino.scale'),
 
-  type: computed('tetromino.queue.lastObject', function() {
-    return this.get('tetromino.queue.lastObject');
+  type: computed('bag.queue.lastObject', function() {
+    return this.get('bag.queue.lastObject');
   }),
 
   positions: computed('type', function() {
