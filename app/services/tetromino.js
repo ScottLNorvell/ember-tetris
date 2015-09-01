@@ -120,7 +120,9 @@ export default Service.extend({
       rotation: 0,
       type: nextType
     });
-    if (this.checkFit()) { console.log('GAME OVER!!!!'); }
+    if (this.doesNotFit()) {
+      this.get('controls').stopGame();
+    }
     bag.fillBag();
   },
 

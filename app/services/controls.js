@@ -28,7 +28,6 @@ export default Service.extend({
 
   playedSquares: computed.alias('played.squares'),
 
-  // TODO: move these to a tetromino service or a Controls Service?
   downRect() {
     let tetromino = this.get('tetromino');
     let played = this.get('played');
@@ -74,6 +73,12 @@ export default Service.extend({
 
   paused: false,
 
+  stopGame() {
+    this.set('paused', true);
+    caf(afID);
+    run.next(() => alert('Game Over!!!'));
+  },
+
   pauseGame() {
     // TODO: we should disable all keys when paused... this just stops autofall
     // ok for now...
@@ -91,6 +96,7 @@ export default Service.extend({
   fallInterval: 1000,
 
   autoFall(timestamp) {
+    if (this.get('paused')) { return; }
     let now = this.get('now');
     let elapsed = timestamp - now;
     if (elapsed >= this.get('fallInterval')) {
@@ -106,7 +112,6 @@ export default Service.extend({
 
   setup() {
     $(document).on('keydown', (e) => {
-      console.log(e.keyCode);
       switch (e.keyCode) {
         case 40: // down arrow
           e.preventDefault();
