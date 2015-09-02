@@ -1,9 +1,11 @@
 import Ember from 'ember';
+import keyMap from 'ember-tetris/utils/key-map';
 
 const {
   Service,
   computed,
   inject,
+  isPresent,
   $,
   run
 } = Ember;
@@ -110,39 +112,16 @@ export default Service.extend({
     afID = raf(this.autoFall.bind(this));
   },
 
+  _handleKeydown(e) {
+    let action = keyMap[e.keyCode];
+    if (isPresent(action)) {
+      e.preventDefault();
+      this[action]();
+    }
+  },
+
   setup() {
-    $(document).on('keydown', (e) => {
-      switch (e.keyCode) {
-        case 40: // down arrow
-          e.preventDefault();
-          this.downRect();
-          break;
-        case 37: // up arrow
-          e.preventDefault();
-          this.leftRect();
-          break;
-        case 39: // right arrow
-          e.preventDefault();
-          this.rightRect();
-          break;
-        case 67: // 'c' key
-          e.preventDefault();
-          this.changeTetromino();
-          break;
-        case 38: // up arrow
-          e.preventDefault();
-          this.rotateTetromino();
-          break;
-        case 32: // space bar
-          e.preventDefault();
-          this.playTetromino();
-          break;
-        case 80: // 'p' key
-          e.preventDefault();
-          this.pauseGame();
-          break;
-      }
-    });
+    $(document).on('keydown', this._handleKeydown.bind(this));
     run.next(() => this.setAutoFall());
   }
 });
