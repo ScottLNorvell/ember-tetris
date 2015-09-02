@@ -113,7 +113,8 @@ export default Service.extend({
   },
 
   _handleKeydown(e) {
-    let action = keyMap[e.keyCode];
+    let map = this.get('paused') ? keyMap['paused'] : keyMap['playing'];
+    let action = map[e.keyCode];
     if (isPresent(action)) {
       e.preventDefault();
       this[action]();
