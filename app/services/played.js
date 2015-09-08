@@ -61,6 +61,13 @@ export default Service.extend({
     this.set('lines', newLines);
   },
 
+  resetAll() {
+    // TODO: do we need to go through and destroy all of the squares?
+    this.get('squares').clear();
+    this.get('squareSet').clear();
+    this.set('lines', Ember.Object.create());
+  },
+
   shiftLines(linesToDelete) {
     let squares = this.get('squares');
     for (let i = 0, len = squares.length; i < len; i++) {

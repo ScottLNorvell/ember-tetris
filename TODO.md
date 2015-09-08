@@ -1,32 +1,16 @@
 # TODO
 
-- [ ] 
+- [ ] implement game over (better)
+- [ ] implement reset
+- [ ] implement high score? (localstorage?)
+- [ ] reverse rotation?
+- [ ] do animation
+- [ ] center "next piece" in circle
+- [ ] Style!
 
 ### Notes
 look at template strings
 see if there is an ES6 Dash set!
-
-#### Cyan (I)
-x 0 0 0 0
-y 0 1 2 3
-#### Yellow (O)
-x 0 1 0 1
-y 0 0 1 1
-#### Purple (T)
-x 0 1 2 1
-y 0 0 0 1
-#### Green (S)
-x 1 2 0 1
-y 0 0 1 1
-#### Red (Z)
-x 0 1 1 2
-y 0 0 1 1
-#### Blue (J)
-x 1 1 0 1
-y 0 1 2 2
-#### Orange (L)
-x 0 0 0 1
-y 0 1 2 2
 
 ### Clear Lines
 - [ ] hide tetromino
@@ -46,10 +30,24 @@ y 0 1 2 2
 - [ ] put next piece or 2 in it...
 
 ### Refactor
-- [ ] make controls service (for controls)
+- [x] make controls service (for controls)
 
 ### Game Over
 - [x] if reset Tetromino cannot be played === 'game over'
     - [ ] Currently only console logs... 
 - [ ] pause the game
 - [ ] ability to reset the board...
+
+### Reset Board
+- [x] resetTetromino
+- [x] clear 'playedSquares'
+- [x] clear squareSet
+- [x] clear lines
+- [x] resetScore
+- [x] resetBag
+- [ ] push score into record of games? (high score?)
+- [x] setAutoFall
+
+### Addon?
+- can install basic app with npm
+- other features (like animation) are hooks? (`willClearLines`, `linesDidClear`, etc...)

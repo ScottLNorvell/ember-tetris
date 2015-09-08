@@ -22,6 +22,8 @@ let ttrI = 0;
 export default Service.extend({
   tetromino: inject.service(),
   played: inject.service(),
+  scoring: inject.service(),
+  bag: inject.service(),
 
   xPos: computed.alias('tetromino.xPos'),
   yPos: computed.alias('tetromino.yPos'),
@@ -75,10 +77,27 @@ export default Service.extend({
 
   paused: false,
 
+  resetBoard() {
+    // README: do we need a 'reset' service so we don't have to inject EVERY service here?
+    this.get('scoring').resetScore();
+    this.get('played').resetAll();
+    this.get('bag').resetBag();
+    this.get('tetromino').resetTetromino();
+    this.set('paused', false);
+    run.next(() => this.setAutoFall());
+  },
+
   stopGame() {
     this.set('paused', true);
     caf(afID);
-    run.next(() => alert('Game Over!!!'));
+    run.next(() => {
+      if (confirm('Game Over!!! Play again?')) {
+        this.resetBoard();
+      } else {
+        // What should happen here????
+        console.log('no more playing for you!');
+      }
+    });
   },
 
   pauseGame() {

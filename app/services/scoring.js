@@ -24,5 +24,12 @@ export default Service.extend({
     let score = baseScores[linesCleared - 1] * (level + 1);
     this.incrementProperty('score', score);
     this.incrementProperty('lines', linesCleared);
+  },
+  resetScore() {
+    // TODO: compute high score here?
+    this.setProperties({
+      score: 0,
+      lines: 0
+    });
   }
 });

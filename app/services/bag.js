@@ -11,6 +11,10 @@ const {
 export default Service.extend({
   _setBag: on('init', function() {
     this.fillBag();
+    this._dontStartYucky();
+  }),
+
+  _dontStartYucky() {
     // make sure we don't start with an s or z
     let bag = this.get('bag');
     let doNotStartWithThese = ['s', 'z'];
@@ -18,7 +22,7 @@ export default Service.extend({
       let badGuy = bag.popObject();
       bag.unshiftObject(badGuy);
     }
-  }),
+  },
 
   queue: computed('bag.length', function() {
     let bag = this.get('bag');
@@ -31,6 +35,12 @@ export default Service.extend({
   tetrominoTypes: computed(function() {
     return Object.keys(tetrominos);
   }),
+
+  resetBag() {
+    this.set('bag', Ember.A());
+    this.fillBag();
+    this._dontStartYucky();
+  },
 
   fillBag() {
     let bag = this.get('bag');
