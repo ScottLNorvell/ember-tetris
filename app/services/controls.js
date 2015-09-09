@@ -76,6 +76,7 @@ export default Service.extend({
   },
 
   paused: false,
+  stopped: false,
 
   resetBoard() {
     // README: do we need a 'reset' service so we don't have to inject EVERY service here?
@@ -83,12 +84,18 @@ export default Service.extend({
     this.get('played').resetAll();
     this.get('bag').resetBag();
     this.get('tetromino').resetTetromino();
-    this.set('paused', false);
+    this.setProperties({
+      paused: false,
+      stopped: false
+    });
     run.next(() => this.setAutoFall());
   },
 
   stopGame() {
-    this.set('paused', true);
+    this.setProperties({
+      paused: true,
+      stopped: true
+    });
     caf(afID);
     run.next(() => {
       if (confirm('Game Over!!! Play again?')) {
@@ -101,8 +108,6 @@ export default Service.extend({
   },
 
   pauseGame() {
-    // TODO: we should disable all keys when paused... this just stops autofall
-    // ok for now...
     if (this.get('paused')) {
       this.set('paused', false);
       this.setAutoFall();
