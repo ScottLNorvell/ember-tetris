@@ -1,7 +1,7 @@
 # TODO
 
-- [ ] implement game over (better)
-- [ ] implement reset
+- [x] implement game over (better)
+- [x] implement reset
 - [ ] implement high score? (localstorage?)
 - [ ] reverse rotation?
 - [ ] do animation
@@ -11,6 +11,15 @@
 ### Notes
 look at template strings
 see if there is an ES6 Dash set!
+
+### Game state
+- [x] directly below next piece
+- [x] Always show controls description
+    - [ ] make this hideable?
+- [x] if `isPlaying` show pause button? Maybe
+- [x] if `isPaused` show paused state
+- [x] if `gameOver` show game over state with new game button
+- [ ] MAKE ALL OF THESE MODALS? (ember-modal?)
 
 ### Clear Lines
 - [ ] hide tetromino
@@ -51,3 +60,9 @@ see if there is an ES6 Dash set!
 ### Addon?
 - can install basic app with npm
 - other features (like animation) are hooks? (`willClearLines`, `linesDidClear`, etc...)
+
+### Refactor to addon!
+I think this is next...
+
+### Write tests!
+Cause why not?
