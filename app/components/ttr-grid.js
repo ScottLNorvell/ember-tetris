@@ -2,21 +2,33 @@ import Ember from 'ember';
 
 const {
   Component,
-  computed
+  computed,
+  inject
 } = Ember;
+
+const [
+  xLines,
+  yLines
+] = [10,22];
 
 export default Component.extend({
   tagName: 'g',
-  yPositions: computed(function() {
+  tetromino: inject.service(),
+  scale: computed.reads('tetromino.scale'),
+  yPositions: computed('scale', function() {
+    let scale = this.get('scale');
+    let limit = scale * yLines;
     let positions = [];
-    for (let i = 30; i < 660; i+=30) {
+    for (let i = scale; i < limit; i+=scale) {
       positions.push(i);
     }
     return positions;
   }),
-  xPositions: computed(function() {
+  xPositions: computed('scale', function() {
+    let scale = this.get('scale');
+    let limit = scale * xLines;
     let positions = [];
-    for (let i = 30; i < 300; i+=30) {
+    for (let i = scale; i < limit; i+=scale) {
       positions.push(i);
     }
     return positions;
