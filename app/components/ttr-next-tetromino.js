@@ -12,9 +12,11 @@ export default Component.extend({
   tagName: 'g',
   attributeBindings: ['style'],
 
-  style: computed('scale', function() {
+  style: computed('scale', 'type', function() {
     let scale = this.get('scale');
-    return `transform: translate(${scale}px, ${scale}px);`;
+    let type = this.get('type');
+    let center = tetrominos[type].nextCenter;
+    return `transform: translate(${scale * center[0]}px, ${scale * center[1]}px);`;
   }),
 
   tetromino: inject.service(),
