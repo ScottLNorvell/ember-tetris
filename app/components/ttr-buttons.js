@@ -13,12 +13,16 @@ export default Component.extend({
   isPlaying: computed('paused', 'gameOver', function() {
     return !(this.get('paused') || this.get('gameOver'));
   }),
+  showControls: false,
   actions: {
     pause() {
       this.get('controls').pauseGame();
     },
     newGame() {
       this.get('controls').resetBoard();
+    },
+    toggleControls() {
+      this.toggleProperty('showControls');
     }
   }
 });
