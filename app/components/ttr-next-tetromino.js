@@ -16,7 +16,8 @@ export default Component.extend({
     let scale = this.get('scale');
     let type = this.get('type');
     let center = tetrominos[type].nextCenter;
-    return `transform: translate(${scale * center[0]}px, ${scale * center[1]}px);`;
+    let style = `transform: translate(${scale * center[0]}px, ${scale * center[1]}px);`;
+    return Ember.String.htmlSafe(style);
   }),
 
   tetromino: inject.service(),

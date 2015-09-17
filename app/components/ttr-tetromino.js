@@ -31,6 +31,7 @@ export default Component.extend({
     if (typeof origin !== 'string') {
       origin = `${origin[0] * scale}px ${origin[1] * scale}px`;
     }
-    return `transform: translate(${xPos * scale}px, ${yPos * scale}px) rotate(${rotation * 90}deg); transform-origin: ${origin}`;
+    let style = `transform: translate(${xPos * scale}px, ${yPos * scale}px) rotate(${rotation * 90}deg); transform-origin: ${origin}`;
+    return Ember.String.htmlSafe(style);
   })
 });
