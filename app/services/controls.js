@@ -12,6 +12,8 @@ const {
 
 const raf = window.requestAnimationFrame;
 const caf = window.cancelAnimationFrame;
+const baseInterval = 1000;
+const difficultyThreshold = 10;
 
 let afID = null;
 
@@ -119,7 +121,11 @@ export default Service.extend({
 
   now: null,
 
-  fallInterval: 1000,
+  linesCleared: computed.reads('scoring.lines'),
+  fallInterval: computed('linesCleared', function() {
+    let lines = this.get('linesCleared');
+    return baseInterval - (lines * difficultyThreshold);
+  }),
 
   autoFall(timestamp) {
     if (this.get('paused')) { return; }
