@@ -5,7 +5,7 @@
 - [ ] implement high score? (localstorage?)
 - [ ] reverse rotation?
 - [ ] do animation
-- [ ] center "next piece" in circle
+- [x] center "next piece" in circle
 - [ ] Style!
 
 ### Notes

@@ -48,9 +48,7 @@ export default Service.extend({
   }),
 
   positions: computed('type', function() {
-    let {
-      type
-    } = this;
+    let type = this.get('type');
     let data = tetrominos[type].positions;
     let positions = [];
     for (let i = 0, len = data[0].length; i < len; i++) {
